@@ -1,0 +1,18 @@
+//@version=6
+indicator("BP", overlay = true)
+
+// --- Multi-Timeframe EMA Calculations ---
+ema1T = request.security(syminfo.tickerid, "1",  ta.ema(close, 27), lookahead = barmerge.lookahead_on)
+ema5T = request.security(syminfo.tickerid, "5",  ta.ema(close, 27), lookahead = barmerge.lookahead_on)
+emaHT = request.security(syminfo.tickerid, "60", ta.ema(close, 27), lookahead = barmerge.lookahead_on)
+emaDT = request.security(syminfo.tickerid, "D",  ta.ema(close, 27), lookahead = barmerge.lookahead_on)
+emaWT = request.security(syminfo.tickerid, "W",  ta.ema(close, 27), lookahead = barmerge.lookahead_on)
+emaMT = request.security(syminfo.tickerid, "M",  ta.ema(close, 27), lookahead = barmerge.lookahead_on)
+
+// --- Plot Lines ---
+plot(ema1T, title = "1T", color = color.rgb(255, 174, 0), force_overlay = true)
+plot(ema5T, title = "5T", color = color.rgb(255, 102, 0), force_overlay = true)
+plot(emaHT, title = "HT", color = color.rgb(221, 0, 255), force_overlay = true)
+plot(emaDT, title = "DT", color = color.rgb(0, 140, 255), force_overlay = true)
+plot(emaWT, title = "WT", color = color.rgb(0, 230, 118), force_overlay = true)
+plot(emaMT, title = "MT", color = color.rgb(255, 235, 59), force_overlay = true)

@@ -56,7 +56,7 @@ pExt5T = plot(showExtended ? extendedEMA5T : na, title = "5Te", color = color.ne
 pExtHT = plot(showExtended ? extendedEMAHT : na, title = "HTe", color = color.new(cHT, tExtended), linewidth=2, force_overlay = true)
 pExtDT = plot(showExtended ? extendedEMADT : na, title = "DTe", color = color.new(cDT, tExtended), linewidth=2, force_overlay = true)
 pExtWT = plot(showExtended ? extendedEMAWT : na, title = "WTe", color = color.new(cWT, tExtended), linewidth=2, force_overlay = true)
-pExtMT = plot(showExtended ? extendedEMAHT : na, title = "MTe", color = color.new(cMT, tExtended), linewidth=2, force_overlay = true)
+pExtMT = plot(showExtended ? extendedEMAMT : na, title = "MTe", color = color.new(cMT, tExtended), linewidth=2, force_overlay = true)
 
 // --- Gradient Fills Between Regular and Extended Lines ---
 fill(pReg1T, pExt1T, color.new(c1T, tFaded), title = "1T Session Gradient")

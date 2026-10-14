@@ -7,9 +7,11 @@ sessionDisplay = input.string(
      defval  = "Both",
      options = ["Chart Default", "Regular Only", "Extended Only", "Both"]
      )
+
 // --- Helper Flags ---
 showRegular  = sessionDisplay == "Both" or sessionDisplay == "Regular Only" or (sessionDisplay == "Chart Default" and syminfo.session == session.regular)
 showExtended = sessionDisplay == "Both" or sessionDisplay == "Extended Only" or (sessionDisplay == "Chart Default" and syminfo.session != session.regular)
+showBoth     = showRegular and showExtended
 
 // --- Multi-Timeframe EMA Calculations on Regular session ---
 tickerRegular = ticker.modify(syminfo.tickerid, session=session.regular)
@@ -19,12 +21,6 @@ regularEMAHT = request.security(tickerRegular, "60", ta.ema(close, 27), lookahea
 regularEMADT = request.security(tickerRegular, "D",  ta.ema(close, 27), lookahead = barmerge.lookahead_on)
 regularEMAWT = request.security(tickerRegular, "W",  ta.ema(close, 27), lookahead = barmerge.lookahead_on)
 regularEMAMT = request.security(tickerRegular, "M",  ta.ema(close, 27), lookahead = barmerge.lookahead_on)
-plot(showRegular ? regularEMA1T : na, title = "1Tr", color = color.rgb(220, 178, 59), linewidth=3, force_overlay = true)
-plot(showRegular ? regularEMA5T : na, title = "5Tr", color = color.rgb(52, 114, 171), linewidth=3, force_overlay = true)
-plot(showRegular ? regularEMAHT : na, title = "HTr", color = color.rgb(162, 72, 255), linewidth=3, force_overlay = true)
-plot(showRegular ? regularEMADT : na, title = "DTr", color = color.rgb(49, 27, 146), linewidth=3, force_overlay = true)
-plot(showRegular ? regularEMAWT : na, title = "WTr", color = color.rgb(14, 179, 91), linewidth=3, force_overlay = true)
-plot(showRegular ? regularEMAMT : na, title = "MTr", color = color.rgb(248, 121, 89), linewidth=3, force_overlay = true)
 
 // --- Multi-Timeframe EMA Calculations on Extended session ---
 tickerExtended = ticker.modify(syminfo.tickerid, session="24h")
@@ -34,9 +30,32 @@ extendedEMAHT = request.security(tickerExtended, "60", ta.ema(close, 27), lookah
 extendedEMADT = request.security(tickerExtended, "D",  ta.ema(close, 27), lookahead = barmerge.lookahead_on)
 extendedEMAWT = request.security(tickerExtended, "W",  ta.ema(close, 27), lookahead = barmerge.lookahead_on)
 extendedEMAMT = request.security(tickerExtended, "M",  ta.ema(close, 27), lookahead = barmerge.lookahead_on)
-plot(showExtended ? extendedEMA1T : na, title = "1Te", color = color.rgb(220, 178, 59), linewidth=2, force_overlay = true)
-plot(showExtended ? extendedEMA5T : na, title = "5Te", color = color.rgb(52, 114, 171), linewidth=2, force_overlay = true)
-plot(showExtended ? extendedEMAHT : na, title = "HTe", color = color.rgb(162, 72, 255), linewidth=2, force_overlay = true)
-plot(showExtended ? extendedEMADT : na, title = "DTe", color = color.rgb(49, 27, 146), linewidth=2, force_overlay = true)
-plot(showExtended ? extendedEMAWT : na, title = "WTe", color = color.rgb(14, 179, 91), linewidth=2, force_overlay = true)
-plot(showExtended ? extendedEMAMT : na, title = "MTe", color = color.rgb(248, 121, 89), linewidth=2, force_overlay = true)
+
+// --- Colors ---
+c1T = color.rgb(220, 178, 59)
+c5T = color.rgb(52, 114, 171)
+cHT = color.rgb(162, 72, 255)
+cDT = color.rgb(49, 27, 146)
+cWT = color.rgb(14, 179, 91)
+cMT = color.rgb(248, 121, 89)
+tRegular = 0
+tExtended = 30
+tFaded = 80
+
+// --- Plotting Regular Session EMAs ---
+pReg1T = plot(showRegular ? regularEMA1T : na, title = "1Tr", color = color.new(c1T, tRegular), linewidth=3, force_overlay = true)
+pReg5T = plot(showRegular ? regularEMA5T : na, title = "5Tr", color = color.new(c5T, tRegular), linewidth=3, force_overlay = true)
+pRegHT = plot(showRegular ? regularEMAHT : na, title = "HTr", color = color.new(cHT, tRegular), linewidth=3, force_overlay = true)
+pRegDT = plot(showRegular ? regularEMADT : na, title = "DTr", color = color.new(cDT, tRegular), linewidth=3, force_overlay = true)
+pRegWT = plot(showRegular ? regularEMAWT : na, title = "WTr", color = color.new(cWT, tRegular), linewidth=3, force_overlay = true)
+pRegMT = plot(showRegular ? regularEMAMT : na, title = "MTr", color = color.new(cMT, tRegular), linewidth=3, force_overlay = true)
+
+// --- Plotting Extended Session EMAs ---
+pExt1T = plot(showExtended ? extendedEMA1T : na, title = "1Te", color = color.new(c1T, tExtended), linewidth=2, force_overlay = true)
+pExt5T = plot(showExtended ? extendedEMA5T : na, title = "5Te", color = color.new(c5T, tExtended), linewidth=2, force_overlay = true)
+pExtHT = plot(showExtended ? extendedEMAHT : na, title = "HTe", color = color.new(cHT, tExtended), linewidth=2, force_overlay = true)
+
+// --- Gradient Fills Between Regular and Extended Lines ---
+fill(pReg1T, pExt1T, color.new(c1T, tFaded), title = "1T Session Gradient")
+fill(pReg5T, pExt5T, color.new(c5T, tFaded),  title = "5T Session Gradient")
+fill(pRegHT, pExtHT, color.new(cHT, tFaded), title = "HT Session Gradient")

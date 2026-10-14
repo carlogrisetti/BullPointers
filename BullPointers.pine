@@ -70,41 +70,81 @@ fill(pReg5T, pExt5T, color.new(c5T, tFaded),  title = "5T Session Gradient")
 fill(pRegHT, pExtHT, color.new(cHT, tFaded), title = "HT Session Gradient")
 
 // --- Plotting Crossover Markers ---
-crossReg1T_5T = ta.cross(regularEMA1T, regularEMA5T)
-crossReg5T_HT = ta.cross(regularEMA5T, regularEMAHT)
-crossRegHT_DT = ta.cross(regularEMAHT, regularEMADT)
-crossRegDT_WT = ta.cross(regularEMADT, regularEMAWT)
+crossReg1T_5T_up = ta.crossover(regularEMA1T, regularEMA5T)
+crossReg1T_5T_dn = ta.crossunder(regularEMA1T, regularEMA5T)
+crossReg5T_HT_up = ta.crossover(regularEMA5T, regularEMAHT)
+crossReg5T_HT_dn = ta.crossunder(regularEMA5T, regularEMAHT)
+crossRegHT_DT_up = ta.crossover(regularEMAHT, regularEMADT)
+crossRegHT_DT_dn = ta.crossunder(regularEMAHT, regularEMADT)
+crossRegDT_WT_up = ta.crossover(regularEMADT, regularEMAWT)
+crossRegDT_WT_dn = ta.crossunder(regularEMADT, regularEMAWT)
 plotshape(
-     series      = flag1T and crossReg1T_5T ? regularEMA5T : na, 
-     title       = "5T/HT Cross Marker", 
-     style       = shape.flag, 
+     series      = flag1T and crossReg1T_5T_up ? regularEMA5T : na, 
+     title       = "5T/HT Bull Cross Marker", 
+     style       = shape.triangleup, 
      location    = location.bottom, 
      color       = c1T, 
      size        = size.small, 
      force_overlay = true
      )
 plotshape(
-     series      = flag5T and crossReg5T_HT ? regularEMAHT : na, 
-     title       = "5T/HT Cross Marker", 
-     style       = shape.flag, 
+     series      = flag1T and crossReg1T_5T_dn ? regularEMA5T : na, 
+     title       = "5T/HT Bear Cross Marker", 
+     style       = shape.triangledown, 
+     location    = location.bottom, 
+     color       = c1T, 
+     size        = size.small, 
+     force_overlay = true
+     )
+plotshape(
+     series      = flag5T and crossReg5T_HT_up ? regularEMAHT : na, 
+     title       = "5T/HT Bull Cross Marker", 
+     style       = shape.triangleup, 
      location    = location.bottom, 
      color       = c5T, 
      size        = size.small, 
      force_overlay = true
      )
 plotshape(
-     series      = flagHT and crossRegHT_DT ? regularEMADT : na, 
-     title       = "HT/DT Cross Marker", 
-     style       = shape.flag, 
+     series      = flag5T and crossReg5T_HT_dn ? regularEMAHT : na, 
+     title       = "5T/HT Bear Cross Marker", 
+     style       = shape.triangledown, 
+     location    = location.bottom, 
+     color       = c5T, 
+     size        = size.small, 
+     force_overlay = true
+     )
+plotshape(
+     series      = flagHT and crossRegHT_DT_up ? regularEMADT : na, 
+     title       = "HT/DT Bull Cross Marker", 
+     style       = shape.triangleup, 
      location    = location.bottom, 
      color       = cHT, 
      size        = size.small, 
      force_overlay = true
      )
 plotshape(
-     series      = flagDT and crossRegDT_WT ? regularEMAWT : na, 
-     title       = "DT/WT Cross Marker", 
-     style       = shape.flag, 
+     series      = flagHT and crossRegHT_DT_dn ? regularEMADT : na, 
+     title       = "HT/DT Bear Cross Marker", 
+     style       = shape.triangledown, 
+     location    = location.bottom, 
+     color       = cHT, 
+     size        = size.small, 
+     force_overlay = true
+     )
+plotshape(
+     series      = flagDT and crossRegDT_WT_up ? regularEMAWT : na, 
+     title       = "DT/WT Bull Cross Marker", 
+     style       = shape.triangleup, 
+     location    = location.bottom, 
+     color       = cDT, 
+     size        = size.small, 
+     force_overlay = true
+     )
+plotshape(
+     series      = flagDT and crossRegDT_WT_dn ? regularEMAWT : na, 
+     title       = "DT/WT Bear Cross Marker", 
+     style       = shape.triangledown, 
      location    = location.bottom, 
      color       = cDT, 
      size        = size.small, 

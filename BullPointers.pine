@@ -54,8 +54,33 @@ pRegMT = plot(showRegular ? regularEMAMT : na, title = "MTr", color = color.new(
 pExt1T = plot(showExtended ? extendedEMA1T : na, title = "1Te", color = color.new(c1T, tExtended), linewidth=2, force_overlay = true)
 pExt5T = plot(showExtended ? extendedEMA5T : na, title = "5Te", color = color.new(c5T, tExtended), linewidth=2, force_overlay = true)
 pExtHT = plot(showExtended ? extendedEMAHT : na, title = "HTe", color = color.new(cHT, tExtended), linewidth=2, force_overlay = true)
+pExtDT = plot(showExtended ? extendedEMADT : na, title = "DTe", color = color.new(cDT, tExtended), linewidth=2, force_overlay = true)
+pExtWT = plot(showExtended ? extendedEMAWT : na, title = "WTe", color = color.new(cWT, tExtended), linewidth=2, force_overlay = true)
+pExtMT = plot(showExtended ? extendedEMAHT : na, title = "MTe", color = color.new(cMT, tExtended), linewidth=2, force_overlay = true)
 
 // --- Gradient Fills Between Regular and Extended Lines ---
 fill(pReg1T, pExt1T, color.new(c1T, tFaded), title = "1T Session Gradient")
 fill(pReg5T, pExt5T, color.new(c5T, tFaded),  title = "5T Session Gradient")
 fill(pRegHT, pExtHT, color.new(cHT, tFaded), title = "HT Session Gradient")
+
+// --- Plotting Crossover Markers ---
+crossRegHT_DT = ta.cross(regularEMAHT, regularEMADT)
+crossRegDT_WT = ta.cross(regularEMADT, regularEMAWT)
+plotshape(
+     series      = crossRegHT_DT ? regularEMAHT : na, 
+     title       = "HT/DT Cross Marker", 
+     style       = shape.flag, 
+     location    = location.bottom, 
+     color       = cHT, 
+     size        = size.small, 
+     force_overlay = true
+     )
+plotshape(
+     series      = crossRegDT_WT ? regularEMAWT : na, 
+     title       = "DT/WT Cross Marker", 
+     style       = shape.flag, 
+     location    = location.bottom, 
+     color       = cDT, 
+     size        = size.small, 
+     force_overlay = true
+     )
